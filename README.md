@@ -31,7 +31,7 @@ Igloo can be used for library design by:
 * Finding sequences close to the seed which are in the same Igloo cluster to the seed
 * Downsampling a large library by maximizing coverage over the Igloo clusters
 
-### For loops with sequences and structures (:star2: recommended)
+### For loops with sequences and structures ( :star2: recommended)
 If structures are available use this approach
 
 **1. Prepare input to Igloo**
@@ -56,7 +56,7 @@ Alternatively, you can write your own processing script to output something like
     --output_path example_igloo_output.parquet
 ```
 
-### For loops with sequences and predicted structures  (:star2: recommended)
+### For loops with sequences and predicted structures  ( :star2: recommended)
 If structures are not available, computationally predicting the structures is recommended.
 
 **1. Prepare your sequences**
