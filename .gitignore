@@ -1,0 +1,9 @@
+*.ipynb
+*.sh
+*.parquet
+wandb/
+__pycache__/
+*.csv
+*.svg
+*.txt
+paper_analyses/unused
