@@ -124,7 +124,7 @@ def main(args):
     print("Number of model parameters:", sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     if args.use_wandb:
-        wandb.init(project="CDRCluster", config=args, dir="/data2/fanga5/logs/wandb/", name=args.project_name)    
+        wandb.init(project="Igloo", config=args, dir="./wandb/", name=args.project_name)    
 
     trainer = VQVAETrainer(model, optimizer, train_dataloader, val_loader=val_loader, device=args.device, epochs=args.num_epochs,
                            use_wandb=args.use_wandb, save_dir=get_save_dir(args.save_dir), scheduler=scheduler, warmup_epochs=args.num_warmup_epochs)

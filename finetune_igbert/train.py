@@ -819,9 +819,9 @@ def main():
         experiment_config["lr_scheduler_type"] = experiment_config["lr_scheduler_type"].value
         if args.report_to == "wandb":
             accelerator.init_trackers(
-                project_name="CDRCluster-PLM",
+                project_name="IglooLM/IglooALM",
                 config=experiment_config,
-                init_kwargs={"wandb": {"dir": "/data2/fanga5/logs/wandb/", "name": args.run_name}},
+                init_kwargs={"wandb": {"dir": "./wandb/", "name": args.run_name}},
             )
 
     # Train!

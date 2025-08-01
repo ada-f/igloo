@@ -26,10 +26,10 @@ Used for benchmarking with AbBiBench
 ```
 python inference.py \
     --output_file embeddings.npy \
-    --config_name IglooLM \
-    --model_name_or_path IglooLM/best_step \
-    --tokenizer_name IglooLM/tokenizer \
-    --validation_file input.parquet \
+    --config_name {$PWD}/IglooLM \
+    --model_name_or_path {$PWD}/IglooLM/best_step \
+    --tokenizer_name {$PWD}/IglooLM/tokenizer \
+    --validation_file example/igloolm_training_data_sample.parquet \
     --per_device_eval_batch_size 64 \
     --pad_to_max_length \
     --preprocessing_num_workers 16 \
@@ -45,10 +45,10 @@ python inference.py \
 ```
 python inference.py \
     --output_file embeddings.npy \
-    --config_name IglooALM \
-    --model_name_or_path IglooALM/best_step \
-    --tokenizer_name IglooALM/tokenizer \
-    --validation_file input.parquet \
+    --config_name {$PWD}/IglooALM \
+    --model_name_or_path {$PWD}/IglooALM/best_step \
+    --tokenizer_name {$PWD}/IglooALM/tokenizer \
+    --validation_file example/igloolm_training_data_sample.parquet \
     --per_device_eval_batch_size 64 \
     --pad_to_max_length \
     --preprocessing_num_workers 16 \
@@ -65,10 +65,10 @@ Sample section options are `CDR1,CDR2,CDR3,CDR4`.
 ```
 /homefs/home/fanga5/micromamba/envs/igbert/bin/python sample_cdrs.py \
     --output_file sampled_sequences.csv \
-    --config_name IglooALM \
-    --model_name_or_path IglooALM/best_step \
-    --tokenizer_name IglooALM/tokenizer \
-    --validation_file input.parquet \
+    --config_name {$PWD}/IglooALM \
+    --model_name_or_path {$PWD}/IglooALM/best_step \
+    --tokenizer_name {$PWD}/IglooALM/tokenizer \
+    --validation_file example/igloolm_training_data_sample.parquet \
     --loop_token_model_weight checkpoints/igloo_weights.pt \
     --loop_token_model_config checkpoints/igloo_config.json \
     --per_device_eval_batch_size 64 \
@@ -84,7 +84,7 @@ Sample section options are `CDR1,CDR2,CDR3,CDR4`.
 ```
 
 ## :fire: Training
-We train IglooLM and IglooALM on all of pOAS with backbone dihedral angles from Ibex-predicted structures. An example input dataset is provided at `assets/igloolm_training_data_sample.parquet`.
+We train IglooLM and IglooALM on all of pOAS with backbone dihedral angles from Ibex-predicted structures. Training of IglooLM and IglooALM uses the same datasets.
 
 To train IglooLM which introduces the Igloo `cls` token as a special token into the protein language model please run:
 ```
@@ -103,8 +103,8 @@ accelerate launch finetune_igbert/train.py \
     --preprocessing_num_workers 16 \
     --use_loop_tokens \
     --use_special_cdr_tokens \
-    --loop_token_model_weight igloo_weights.pt \
-    --loop_token_model_config igloo_config.json \
+    --loop_token_model_weight checkpoints/igloo_weights.pt \
+    --loop_token_model_config checkpoints/igloo_config.json \
     --checkpointing_steps 2000 \
     --learning_rate 1e-5 \
     --num_warmup_steps 1000 \
@@ -112,10 +112,10 @@ accelerate launch finetune_igbert/train.py \
     --weight_decay 1e-5 \
     --report_to wandb \
     --with_tracking \
-    --run_name "igloo_igbert"
+    --run_name "IglooLM"
 ```
 
-To train IglooALM please change the flag `--use_loop_tokens` to `--use_loop_tokens_whole_sequence`, which introduces the Igloo `cls` token as a special token and multimodal residue tokens for the loop residues into the protein language model.
+To train IglooALM, please change the flag `--use_loop_tokens` to `--use_loop_tokens_whole_sequence`, which introduces the Igloo `cls` token as a special token and multimodal residue tokens for the loop residues into the protein language model.
 ```
 accelerate launch finetune_igbert/train.py \
     --config_name Exscientia/IgBert \
@@ -132,8 +132,8 @@ accelerate launch finetune_igbert/train.py \
     --preprocessing_num_workers 16 \
     --use_loop_tokens_whole_sequence \
     --use_special_cdr_tokens \
-    --loop_token_model_weight igloo_weights.pt \
-    --loop_token_model_config igloo_config.json \
+    --loop_token_model_weight checkpoints/igloo_weights.pt \
+    --loop_token_model_config checkpoints/igloo_config.json \
     --checkpointing_steps 2000 \
     --learning_rate 1e-5 \
     --num_warmup_steps 1000 \
@@ -141,5 +141,5 @@ accelerate launch finetune_igbert/train.py \
     --weight_decay 1e-5 \
     --report_to wandb \
     --with_tracking \
-    --run_name "igloo_igbert"
+    --run_name "IglooALM"
 ```

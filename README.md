@@ -30,9 +30,11 @@ pip install faiss-cpu==1.9.0
 pip install logomaker==0.8.7
 pip install dtaidistance==2.3.13
 pip install fastparquet==2024.11.0
+pip install h5py
 pip install tqdm
 pip install matplotlib 
 pip install umap-learn
+pip install wandb
 ```
 
 ## :rocket: Run Igloo
@@ -79,25 +81,13 @@ CSV file, see `example/sample_igloo_sequences.csv`, containing sequences of heav
 **2. Run structure prediction**
 
 Igloo can tokenize loops with sequence only, but performs better if it has structures of the antibodies. Generate structures with a structure predictor, e.g. Ibex which is provided in the Prescient repo.
-
-Internal use
-```
-git clone https://code.roche.com/prescient-design/prescient.git # if you have not already
-cd prescient/ibex/src
-python -m ibex.cmdline.inference \
-    --model ibex \
-    --csv example/sample_igloo_sequences.csv  \
-    --batch-size 32 \
-    --output ibex_predictions_dir/
-```
-
-External use
 ```
 pip install prescient-ibex
 ibex --csv example/sample_igloo_sequences.csv --output ibex_predictions_dir/
 ```
 
 **3. Prepare input to Igloo**
+
 ```
 python process_data/process_dihedrals.py \
     --id_key "id" --aho_light_key "fv_light_aho" --aho_heavy_key "fv_heavy_aho" \
@@ -109,7 +99,7 @@ The output file will have loops with `loop_id`, where it is the sequence id with
 
 **4. Igloo Inference**
 ```
-/homefs/home/fanga5/micromamba/envs/pyenv/bin/python run_igloo.py \
+python run_igloo.py \
     --model_ckpt checkpoints/igloo_weights.pt \
     --model_config checkpoints/igloo_config.json \
     --loop_dataset_path example/sample_igloo_input.parquet \
@@ -125,7 +115,7 @@ To run Igloo with sequence only, prepare a CSV file with the columns:
 
 An example is provided at `example/sample_igloo_input_sequence_only.csv`.
 ```
-/homefs/home/fanga5/micromamba/envs/pyenv/bin/python run_igloo.py \
+python run_igloo.py \
     --model_ckpt checkpoints/igloo_weights.pt \
     --model_config checkpoints/igloo_config.json \
     --loop_dataset_path example/sample_igloo_input_sequence_only.csv \
@@ -140,7 +130,7 @@ The output is a parquet file with the following columns:
 * `quantized_indices`: An integer indicating which discrete Igloo token
 
 ## :snowflake: Training Igloo
-Igloo is first trained on SAbDab and Ibex-predicted pOAS structures. Then finetuned on just SAbDab.
+Igloo was first trained on SAbDab and Ibex-predicted pOAS structures. Then finetuned on just SAbDab.
 ```
 python train.py \
     --train_data_path poas_sabdab_train.jsonl \
