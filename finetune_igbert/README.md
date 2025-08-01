@@ -16,7 +16,7 @@ For training of inference with IglooLM and IglooALM please prepare a parquet fil
     * heavy chain `FW1: (0, 23), CDR1: (23, 42), FW2: (42, 56), CDR2: (56, 69), FW3: (69, 81), CDR4: (81, 89), FW4: (89, 106), CDR3: (106, 138), FW5: (138, None)`
 * angles: the backbone dihedral angles, which is a numpy array of shape `[4,36,3]` for the 4 loops, dihedral angles which are zero-padded to length 36, and 3 dihedral angles $\phi, \psi, \omega$
 
-We provide an example at `assets/igloolm_training_data_sample.parquet`.
+We provide an example at `example/igloolm_training_data_sample.parquet`.
 
 ## :rocket: Inference with trained models
 For an example of how the input to the model should be formatted 

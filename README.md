@@ -22,56 +22,79 @@ pip install torch==2.7.1
 pip install vector-quantize-pytorch==1.22.16
 pip install numpy==1.26.4
 pip install pandas==2.3.0
+pip install scipy==1.15.2
 pip install scikit-learn==1.7.0
 pip install biotite==1.3.0
+pip install seaborn==0.13.2
+pip install faiss-cpu==1.9.0
+pip install logomaker==0.8.7
+pip install dtaidistance==2.3.13
+pip install fastparquet==2024.11.0
+pip install tqdm
+pip install matplotlib 
+pip install umap-learn
 ```
 
 ## :rocket: Run Igloo
-Igloo can be used for library design by:
-* Finding sequences close to the seed which are in the same Igloo cluster to the seed
-* Downsampling a large library by maximizing coverage over the Igloo clusters
-
 ### For loops with sequences and structures ( :star2: recommended)
 If structures are available use this approach
 
 **1. Prepare input to Igloo**
-The `structure_dir` should be a directory of PDB files where the structure for a sequence is given by `<id_key>.pdb`.
+Prepare a CSV file, see `example/sample_igloo_sequences.csv` containing sequences of heavy and light chains. Required columns:
+* `fv_heavy_aho` and `fv_light_aho` sequences of aho aligned heavy and light chains. For aho alignments of sequences please refer to [ANARCI](https://github.com/oxpig/ANARCI).
+* `id` unique identifier for each antibody that should correspond to the file name `<id>.pdb` in the `structure_dir`.
+
 ```
 python process_data/process_dihedrals.py \
     --id_key "id" --aho_light_key "fv_light_aho" --aho_heavy_key "fv_heavy_aho" \
     --structure_dir my_pdbs/ \
-    --df_path example_igloo_sequences.csv \
-    --parquet_output_path example_igloo_input.parquet
+    --df_path example/sample_igloo_sequences.csv \
+    --parquet_output_path example/sample_igloo_input.parquet
 ```
 The output file will have loops with `loop_id`, where it is the sequence id with `_{loop_type}` as a suffix and `loop_type` is one of `[H1, H2, H3, H3, L1, L2, L3, L4]`.
 
-Alternatively, you can write your own processing script to output something like the example `assets/sample_igloo_input.parquet`.
+Alternatively, you can write your own processing script to output something like the example `example/sample_igloo_input.parquet`.
 
 **2. Igloo Inference**
 ```
 /homefs/home/fanga5/micromamba/envs/pyenv/bin/python run_igloo.py \
     --model_ckpt checkpoints/igloo_weights.pt \
     --model_config checkpoints/igloo_config.json \
-    --loop_dataset_path example_igloo_input.parquet \
-    --output_path example_igloo_output.parquet
+    --loop_dataset_path example/sample_igloo_input.parquet \
+    --output_path example/sample_igloo_output.parquet
 ```
 
-### For loops with sequences and predicted structures  ( :star2: recommended)
-If structures are not available, computationally predicting the structures is recommended.
+### For loops with sequences and predicted structures  ( :star: recommended)
+Igloo can be used for library design by:
+* Finding sequences close to the seed which are in the same Igloo cluster to the seed
+* Downsampling a large library by maximizing coverage over the Igloo clusters
 
 **1. Prepare your sequences**
 
-CSV file `example_igloo_sequences.csv` containing sequences of heavy and light chains. Required columns:
+CSV file, see `example/sample_igloo_sequences.csv`, containing sequences of heavy and light chains. Required columns:
 * `fv_heavy` and `fv_light` sequences of heavy and light chains.
 * `fv_heavy_aho` and `fv_light_aho` sequences of aho aligned heavy and light chains. For aho alignments of sequences please refer to [ANARCI](https://github.com/oxpig/ANARCI).
 * `id` unique identifier for each antibody chain sequence, can be just a unique number for each sequence.
 
-**2. Run structure prediction with Ibex**
+**2. Run structure prediction**
 
-Igloo can tokenize loops with sequence only, but performs better if it has structures of the antibodies. Generate structures with a structure predictor, we show how this can be done with [Ibex](https://github.com/prescient-design/ibex).
+Igloo can tokenize loops with sequence only, but performs better if it has structures of the antibodies. Generate structures with a structure predictor, e.g. Ibex which is provided in the Prescient repo.
+
+Internal use
+```
+git clone https://code.roche.com/prescient-design/prescient.git # if you have not already
+cd prescient/ibex/src
+python -m ibex.cmdline.inference \
+    --model ibex \
+    --csv example/sample_igloo_sequences.csv  \
+    --batch-size 32 \
+    --output ibex_predictions_dir/
+```
+
+External use
 ```
 pip install prescient-ibex
-ibex --csv example_igloo_sequences.csv --output ibex_predictions_dir/
+ibex --csv example/sample_igloo_sequences.csv --output ibex_predictions_dir/
 ```
 
 **3. Prepare input to Igloo**
@@ -79,8 +102,8 @@ ibex --csv example_igloo_sequences.csv --output ibex_predictions_dir/
 python process_data/process_dihedrals.py \
     --id_key "id" --aho_light_key "fv_light_aho" --aho_heavy_key "fv_heavy_aho" \
     --structure_dir ibex_predictions_dir/ \
-    --df_path example_igloo_sequences.csv \
-    --parquet_output_path example_igloo_input.parquet
+    --df_path example/sample_igloo_sequences.csv \
+    --parquet_output_path example/sample_igloo_input.parquet
 ```
 The output file will have loops with `loop_id`, where it is the sequence id with `_{loop_type}` as a suffix and `loop_type` is one of `[H1, H2, H3, H3, L1, L2, L3, L4]`.
 
@@ -89,22 +112,24 @@ The output file will have loops with `loop_id`, where it is the sequence id with
 /homefs/home/fanga5/micromamba/envs/pyenv/bin/python run_igloo.py \
     --model_ckpt checkpoints/igloo_weights.pt \
     --model_config checkpoints/igloo_config.json \
-    --loop_dataset_path example_igloo_input.parquet \
-    --output_path example_igloo_output.parquet
+    --loop_dataset_path example/sample_igloo_input.parquet \
+    --output_path example/sample_igloo_output.parquet
 ```
 
 ### For loops with only sequences and *without* predicted structures
 This may be preferable if there are many sequences (i.e. millions) and running structure prediction on all of the sequences is too compute intensive.
 
-To run Igloo with sequence only, prepare a `igloo_input.csv` file with the columns:
+To run Igloo with sequence only, prepare a CSV file with the columns:
 * `loop_id`: Unique identifier for each loop
 * `loop_sequence`: One letter amino acid sequence for loop
+
+An example is provided at `example/sample_igloo_input_sequence_only.csv`.
 ```
 /homefs/home/fanga5/micromamba/envs/pyenv/bin/python run_igloo.py \
     --model_ckpt checkpoints/igloo_weights.pt \
     --model_config checkpoints/igloo_config.json \
-    --loop_dataset_path igloo_input.csv \
-    --output_path igloo_output.parquet
+    --loop_dataset_path example/sample_igloo_input_sequence_only.csv \
+    --output_path example/sample_igloo_out_sequence_only.parquet
 ```
 
 ### Igloo output
@@ -115,7 +140,7 @@ The output is a parquet file with the following columns:
 * `quantized_indices`: An integer indicating which discrete Igloo token
 
 ## :snowflake: Training Igloo
-Igloo was first trained on SAbDab and Ibex-predicted pOAS structures. Then finetuned on just SAbDab. Sample training data is available at `assets/sample_igloo_input.jsonl`.
+Igloo is first trained on SAbDab and Ibex-predicted pOAS structures. Then finetuned on just SAbDab.
 ```
 python train.py \
     --train_data_path poas_sabdab_train.jsonl \
