@@ -2,7 +2,7 @@
 
 <img src="assets/igloo_logo.png" alt="Igloo" width="300"/>
 
-[Preprint](link_to_preprint)
+[Preprint](https://arxiv.org/abs/2509.08707)
 
 Authors
 * Ada Fang
@@ -12,7 +12,7 @@ Authors
 
 ## :seedling: Getting started
 
-Clone the repo: `git clone https://code.roche.com/fanga5/igloo.git`
+Clone the repo: `git clone https://github.com/prescient-design/ibex.git`
 
 Python requirements
 ```
@@ -176,7 +176,7 @@ python train.py \
 ```
 
 ## :robot: IglooLM and IglooALM
-Please refer to [finetune_igbert/README.md](https://code.roche.com/fanga5/igloo/-/tree/main/finetune_igbert?ref_type=heads).
+Please refer to [finetune_igbert/README.md](https://github.com/prescient-design/igloo/blob/main/finetune_igbert/README.md).
 
 ## :bulb: Tutorials and reproducing paper analyses
 
@@ -195,6 +195,19 @@ See: `paper_analyses/3_abbibench/run_abbibench.py`. Baselines can be run at `pap
 
 ### Sampling structurally-consistent loop sequences with IglooALM
 See: `paper_analyses/4_sampled_cdrs/analyse_sampled_cdrs.ipynb`.
+
+## Citation
+```bibtex
+@misc{fang2025tokenizingloopsantibodies,
+      title={Tokenizing Loops of Antibodies}, 
+      author={Ada Fang and Robert G. Alberstein and Simon Kelow and Frédéric A. Dreyer},
+      year={2025},
+      eprint={2509.08707},
+      archivePrefix={arXiv},
+      primaryClass={q-bio.BM},
+      url={https://arxiv.org/abs/2509.08707}, 
+}
+```
 
 ## :hammer_and_wrench: Support
 Please feel free to contact Ada Fang ([ada_fang@g.harvard.edu](mailto:ada_fang@g.harvard.edu)) of Frédéric Dreyer ([dreyerf1@gene.com](mailto:dreyerf1@gene.com)) for any questions or help with running Igloo.
