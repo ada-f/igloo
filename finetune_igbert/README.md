@@ -63,7 +63,7 @@ python inference.py \
 ### Sample CDRs given dihedral angles with IglooALM
 Sample section options are `CDR1,CDR2,CDR3,CDR4`.
 ```
-/homefs/home/fanga5/micromamba/envs/igbert/bin/python sample_cdrs.py \
+python sample_cdrs.py \
     --output_file sampled_sequences.csv \
     --config_name {$PWD}/IglooALM \
     --model_name_or_path {$PWD}/IglooALM/best_step \

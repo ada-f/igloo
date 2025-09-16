@@ -15,10 +15,7 @@ from multiprocessing import Pool
 from typing import Callable, Iterable
 from functools import wraps
 from operator import attrgetter
-
-import sys
-sys.path.append("/data2/fanga5/prescient/prescient/src")
-from prescient.transforms.functional._anarci_numbering import anarci_numbering
+import anarci_numbering
 
 ########## Constants ##########
 PDB_DIR = Path(os.environ['PDB_DIR']).resolve()

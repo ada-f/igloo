@@ -4,9 +4,9 @@ import umap
 from tqdm import tqdm
 
 embedding_files = [
-    "/data2/fanga5/embeddings/embeddings_test_loop_len_all_seed_42.parquet",
-    "/data2/fanga5/embeddings/embeddings_val_loop_len_all_seed_42.parquet",
-    "/data2/fanga5/embeddings/embeddings_train_loop_len_all_seed_42.parquet",
+    "embeddings/embeddings_test_loop_len_all_seed_42.parquet",
+    "embeddings/embeddings_val_loop_len_all_seed_42.parquet",
+    "embeddings/embeddings_train_loop_len_all_seed_42.parquet",
 ]
 
 dfs = []
@@ -34,4 +34,4 @@ for n_neighbors in [5, 20, 50]:
         df_umap[f'x_{n_neighbors}_{min_dist}'] = embedding_2d[:, 0]
         df_umap[f'y_{n_neighbors}_{min_dist}'] = embedding_2d[:, 1]
 
-        df_umap.to_parquet(f"/data2/fanga5/embeddings/umap_sabdab_embeddings_{n_neighbors}_{min_dist}.parquet", index=False)
+        df_umap.to_parquet(f"embeddings/umap_sabdab_embeddings_{n_neighbors}_{min_dist}.parquet", index=False)

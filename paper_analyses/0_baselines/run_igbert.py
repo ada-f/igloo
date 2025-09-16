@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-os.environ['HF_HOME'] = "/data/fanga5/huggingface"
+os.environ['HF_HOME'] = "huggingface"
 from transformers import BertModel, BertTokenizer
 import torch
 import numpy as np

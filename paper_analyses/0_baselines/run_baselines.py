@@ -20,21 +20,21 @@ from typing import Literal
 
 # ----- MIF Loading ------- #
 import sys
-sys.path.append("/data2/fanga5/StructTokenBench/src/baselines/protein-sequence-models")
+sys.path.append("StructTokenBench/src/baselines/protein-sequence-models")
 from sequence_models.pretrained import load_model_and_alphabet as mif_load_model_and_alphabet
 from sequence_models.pdb_utils import parse_PDB as mif_parse_PDB
 from sequence_models.pdb_utils import process_coords as mif_process_coords
 
 # ----- ProTokens Loading ------- #
 import sys
-sys.path.append("/data2/fanga5/StructTokenBench/src/baselines/ProToken")
+sys.path.append("StructTokenBench/src/baselines/ProToken")
 from data_process.preprocess import save_pdb_from_aux, protoken_encoder_preprocess, protoken_decoder_preprocess, init_protoken_model
 from data_process.preprocess import protoken_encoder_input_features, protoken_decoder_input_features
 from data_process import residue_constants
 
 # ----- AIDO Loading ------- #
 import sys
-sys.path.append("/data2/fanga5/StructTokenBench/src/baselines/ModelGenerator")
+sys.path.append("StructTokenBench/src/baselines/ModelGenerator")
 try:
     from modelgenerator.structure_tokenizer.models import EquiformerEncoderLightning
     from modelgenerator.structure_tokenizer.datasets.protein_dataset import ProteinDataset
@@ -44,7 +44,7 @@ except ModuleNotFoundError:
 
 # ----- Cheap Loading ------- #
 import sys
-sys.path.append("/data2/fanga5/StructTokenBench/src/baselines")
+sys.path.append("StructTokenBench/src/baselines")
 try:
     # load from Cheap
     from cheap_proteins.src.cheap.pretrained import (
@@ -331,7 +331,7 @@ class WrappedProteinMPNNTokenizer():
 
 if __name__ == "__main__":
     args = parse_args()
-    DATA_DIR = "/data/fanga5/sabdab/"
+    DATA_DIR = "sabdab/"
 
     if args.model_type == "ProteinMPNN":
         encoder = WrappedProteinMPNNTokenizer(device="cuda" if torch.cuda.is_available() else "cpu")
@@ -340,7 +340,7 @@ if __name__ == "__main__":
     else:
         raise ValueError(f"Unknown model type: {args.model_type}")
 
-    raw_df = pd.read_parquet("/data/fanga5/preprocessed_data/sabdab_2025-05-06-paired.parquet")
+    raw_df = pd.read_parquet("preprocessed_data/sabdab_2025-05-06-paired.parquet")
     raw_df['sabdab_id'] = range(len(raw_df))
     ab_fname_to_id = {fname: sabdab_id for fname, sabdab_id in zip(raw_df['ab_fname'], raw_df['sabdab_id'])}
     id_to_ab_fname = {sabdab_id: fname for fname, sabdab_id in zip(raw_df['ab_fname'], raw_df['sabdab_id'])}

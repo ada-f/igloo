@@ -1,9 +1,9 @@
 import os
-os.environ['HF_HOME']='/data2/fanga5/saprot'
-os.environ['HF_DATASETS_CACHE']='/data2/fanga5/saprot/datasets'
-os.environ['HF_MODELS_CACHE']='/data2/fanga5/saprot/models'
-os.environ['HF_DATASETS_DOWNLOADED_DATASETS_PATH']='/data2/fanga5/saprot/datasets'
-os.environ['HUGGINGFACE_HUB_CACHE']='/data2/fanga5/saprot/hub'
+os.environ['HF_HOME']='saprot'
+os.environ['HF_DATASETS_CACHE']='saprot/datasets'
+os.environ['HF_MODELS_CACHE']='saprot/models'
+os.environ['HF_DATASETS_DOWNLOADED_DATASETS_PATH']='saprot/datasets'
+os.environ['HUGGINGFACE_HUB_CACHE']='saprot/hub'
 
 from transformers import EsmTokenizer, EsmForMaskedLM
 import argparse

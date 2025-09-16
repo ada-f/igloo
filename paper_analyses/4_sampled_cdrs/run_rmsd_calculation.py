@@ -11,13 +11,13 @@ num_workers = int(sys.argv[1]) if len(sys.argv) > 1 else 16
 
 threetoone = ProteinSequence.convert_letter_3to1
 
-SABDAB_DIR = "/data/fanga5/sabdab"
+SABDAB_DIR = "sabdab"
 
-chains_df = pd.read_parquet("/data/fanga5/preprocessed_data/sabdab_2025-05-06-paired_chains.parquet")
+chains_df = pd.read_parquet("preprocessed_data/sabdab_2025-05-06-paired_chains.parquet")
 
 temperatures = [0.01, 0.05, 0.1, 0.2, 0.5, 1.0, 2.0]
 models = ['abmpnn', 'antifold', 'proteinmpnn', 'igbert_igloo', 'igloolm', 'igbert']
-SAMPLED_DIR = '/data2/fanga5/sample_cdrs/'
+SAMPLED_DIR = 'sample_cdrs/'
 
 def calculate_rmsd_of_loop(args):
     model, temp, ab_fname, loop_type, chain_id = args
@@ -58,7 +58,7 @@ def calculate_rmsd_of_loop(args):
 all_results = []
 args = []
 for loop_type in ['H1', 'H2', 'H3', 'L1', 'L2', 'L3']:
-    ab_fnames = pd.read_csv(f"/data2/fanga5/sample_cdrs/antifold/input/antifold_input_{loop_type}.csv")['ab_fname'].to_list()
+    ab_fnames = pd.read_csv(f"sample_cdrs/antifold/input/antifold_input_{loop_type}.csv")['ab_fname'].to_list()
     for model in models:
         for temp in temperatures:
             for ab_fname in ab_fnames:
@@ -67,4 +67,4 @@ with Pool(processes=num_workers) as pool:
     results = list(tqdm(pool.imap(calculate_rmsd_of_loop, args), total=len(args)))
     results = [item for sublist in results for item in sublist]  # Flatten the list
 df = pd.DataFrame(results, columns=['model', 'temperature', 'ab_fname', 'sampled_fname', 'loop_type', 'chain_id', 'sabdab_seq', 'sampled_seq', 'rmsd'])
-df.to_csv('/data2/fanga5/sample_cdrs/rmsd_results.csv', index=False)
+df.to_csv('sample_cdrs/rmsd_results.csv', index=False)

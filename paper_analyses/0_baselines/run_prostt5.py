@@ -8,11 +8,11 @@ Created on Fri Jun 16 14:27:44 2023
 """
 
 import os
-os.environ['HF_HOME']='/data2/fanga5/prostt5'
-os.environ['HF_DATASETS_CACHE']='/data2/fanga5/prostt5/datasets'
-os.environ['HF_MODELS_CACHE']='/data2/fanga5/prostt5/models'
-os.environ['HF_DATASETS_DOWNLOADED_DATASETS_PATH']='/data2/fanga5/prostt5/datasets'
-os.environ['HUGGINGFACE_HUB_CACHE']='/data2/fanga5/prostt5/hub'
+os.environ['HF_HOME']='prostt5'
+os.environ['HF_DATASETS_CACHE']='prostt5/datasets'
+os.environ['HF_MODELS_CACHE']='prostt5/models'
+os.environ['HF_DATASETS_DOWNLOADED_DATASETS_PATH']='prostt5/datasets'
+os.environ['HUGGINGFACE_HUB_CACHE']='prostt5/hub'
 
 import argparse
 import time

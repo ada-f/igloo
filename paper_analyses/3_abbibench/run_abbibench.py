@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 item_id = args.item_id
 
-DATA_DIR = "/data2/fanga5/benchmarking_data/AbBiBench"
+DATA_DIR = "benchmarking_data/AbBiBench"
 
 binding_scores_path = f'{DATA_DIR}/{item_id}_benchmarking_data_loops.csv'
 binding_scores_df = pd.read_csv(binding_scores_path)

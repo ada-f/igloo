@@ -9,11 +9,11 @@ random.seed(42)
 # sys.path.append(os.path.join(os.path.dirname(__file__), "../process_data"))
 # from process_dihedrals import get_loop_regions
 
-# df = pd.read_parquet("/data2/fanga5/paired_OAS/paired_OAS_index.parquet")
+# df = pd.read_parquet("paired_OAS/paired_OAS_index.parquet")
 # df = get_loop_regions(df, aho_light_key='fv_light_aho', aho_heavy_key='fv_heavy_aho')
-# df.to_parquet("/data2/fanga5/paired_OAS/paired_OAS_index_with_loops.parquet", index=False)
+# df.to_parquet("paired_OAS/paired_OAS_index_with_loops.parquet", index=False)
 
-df = pd.read_parquet("/data2/fanga5/paired_OAS/igloo/input/paired_OAS_loops_data_with_angles.parquet")
+df = pd.read_parquet("paired_OAS/igloo/input/paired_OAS_loops_data_with_angles.parquet")
 
 mask = np.ones(len(df), dtype=bool)
 for loop_section in ["LFW1", "L1", "LFW2", "L2", "LFW3", "L3", "LFW4", "L4", "LFW5", "HFW1", "H1", "HFW2", "H2", "HFW3", "H3", "HFW4", "H4", "HFW5"]:
@@ -92,10 +92,10 @@ for split in ['train', 'val', 'test']:
     })
     df_chains = pd.concat([light_chains, heavy_chains], axis=0)
     print(f"Total chains in {split} split: {len(df_chains)}")
-    df_chains.to_parquet(f"/data2/fanga5/paired_OAS/paired_OAS_index_with_loops_and_angles_single_chain_{split}_with_seqid.parquet", index=False)
+    df_chains.to_parquet(f"paired_OAS/paired_OAS_index_with_loops_and_angles_single_chain_{split}_with_seqid.parquet", index=False)
 
     if split == 'test':
-        light_chains.to_parquet(f"/data2/fanga5/paired_OAS/paired_OAS_index_with_loops_and_angles_light_chain_{split}_with_seqid.parquet", index=False)
-        heavy_chains.to_parquet(f"/data2/fanga5/paired_OAS/paired_OAS_index_with_loops_and_angles_heavy_chain_{split}_with_seqid.parquet", index=False)
+        light_chains.to_parquet(f"paired_OAS/paired_OAS_index_with_loops_and_angles_light_chain_{split}_with_seqid.parquet", index=False)
+        heavy_chains.to_parquet(f"paired_OAS/paired_OAS_index_with_loops_and_angles_heavy_chain_{split}_with_seqid.parquet", index=False)
 
-    print(f"Saved {split} split with {len(df_chains)} chains to /data2/fanga5/paired_OAS/paired_OAS_index_with_loops_and_angles_single_chain_{split}_with_seqid.parquet")
+    print(f"Saved {split} split with {len(df_chains)} chains to paired_OAS/paired_OAS_index_with_loops_and_angles_single_chain_{split}_with_seqid.parquet")

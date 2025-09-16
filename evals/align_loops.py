@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
     from metrics import dihedral_distance
 
-    df = pd.read_parquet("/data/fanga5/preprocessed_data/sabdab_2025-05-06-paired_loops.parquet")
+    df = pd.read_parquet("preprocessed_data/sabdab_2025-05-06-paired_loops.parquet")
 
     index1 = 93163 # 13759_4jo2_IM.pdb, L1
     index2 = 57438 # 8409_3lhp_IM.pdb, L1

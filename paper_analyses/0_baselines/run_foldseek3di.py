@@ -113,11 +113,11 @@ class WrappedFoldSeekTokenizer():
 
 if __name__ == "__main__":
     args = parse_args()
-    DATA_DIR = "/data/fanga5/sabdab/"
+    DATA_DIR = "sabdab/"
 
     encoder = WrappedFoldSeekTokenizer(device="cuda" if torch.cuda.is_available() else "cpu")
 
-    raw_df = pd.read_parquet("/data/fanga5/preprocessed_data/sabdab_2025-05-06-paired.parquet")
+    raw_df = pd.read_parquet("preprocessed_data/sabdab_2025-05-06-paired.parquet")
     raw_df['sabdab_id'] = range(len(raw_df))
     ab_fname_to_id = {fname: sabdab_id for fname, sabdab_id in zip(raw_df['ab_fname'], raw_df['sabdab_id'])}
     id_to_ab_fname = {sabdab_id: fname for fname, sabdab_id in zip(raw_df['ab_fname'], raw_df['sabdab_id'])}

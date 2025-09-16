@@ -1,7 +1,7 @@
 import os
-os.environ['TRITON_CACHE_DIR'] = "/data2/fanga5/.cache/triton"
+os.environ['TRITON_CACHE_DIR'] = ".cache/triton"
 import sys
-sys.path.append("/data2/fanga5/StructTokenBench/src")
+sys.path.append("StructTokenBench/src")
 from vqvae_model import VQVAEModel
 from protein_chain import WrappedProteinChain
 import torch
@@ -81,10 +81,10 @@ class WrappedOurPretrainedTokenizer():
 
 if __name__ == "__main__":
     ckpt_name="AminoAseed"
-    pretrained_ckpt_path="/data2/fanga5/StructTokenBench/struct_token_bench_release_ckpt/codebook_512x1024-1e+19-linear-fixed-last.ckpt/checkpoint/mp_rank_00_model_states.pt"
+    pretrained_ckpt_path="StructTokenBench/struct_token_bench_release_ckpt/codebook_512x1024-1e+19-linear-fixed-last.ckpt/checkpoint/mp_rank_00_model_states.pt"
     quantizer_use_linear_project=True
 
-    cfg = omegaconf.OmegaConf.load(os.path.join("/data2/fanga5/StructTokenBench/src/script/config/AminoAseed.yaml"))["model"]
+    cfg = omegaconf.OmegaConf.load(os.path.join("StructTokenBench/src/script/config/AminoAseed.yaml"))["model"]
     cfg.quantizer.freeze_codebook = True
     cfg.quantizer._need_init = False
     cfg.quantizer.use_linear_project = True
@@ -97,8 +97,8 @@ if __name__ == "__main__":
     )
 
     args = parse_args()
-    DATA_DIR = "/data/fanga5/sabdab/"
-    raw_df = pd.read_parquet("/data/fanga5/preprocessed_data/sabdab_2025-05-06-paired.parquet")
+    DATA_DIR = "sabdab/"
+    raw_df = pd.read_parquet("preprocessed_data/sabdab_2025-05-06-paired.parquet")
     raw_df['sabdab_id'] = range(len(raw_df))
     ab_fname_to_id = {fname: sabdab_id for fname, sabdab_id in zip(raw_df['ab_fname'], raw_df['sabdab_id'])}
     id_to_ab_fname = {sabdab_id: fname for fname, sabdab_id in zip(raw_df['ab_fname'], raw_df['sabdab_id'])}

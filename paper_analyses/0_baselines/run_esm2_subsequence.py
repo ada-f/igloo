@@ -1,6 +1,6 @@
 import os
 
-os.environ["TORCH_HOME"] = "/data2/fanga5/baseline_models/esm2"
+os.environ["TORCH_HOME"] = "baseline_models/esm2"
 
 import torch
 import esm
